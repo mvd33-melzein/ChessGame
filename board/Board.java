@@ -10,7 +10,7 @@ public class Board{
     }
     
     
-    private void initialize(){
+    public void initialize(){
         // Black Pieces
         board[7][0] = new Rook(Color.BLACK, new Position(0,0));
         board[7][1] = new Knight(Color.BLACK, new Position(0,1));
@@ -71,11 +71,5 @@ public class Board{
             }
             System.out.println();
         }
-    }
-
-    public static void main(String[] args) {
-        Board board = new Board();
-        board.initialize();
-        board.display();
     }
 }
