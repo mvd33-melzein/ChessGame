@@ -1,6 +1,6 @@
 package pieces;
 
-import board.Position;
+import board.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,9 +11,22 @@ public class Knight extends Piece{
     }
 
     @Override
-    public List<Position> possibleMoves(){
+    public List<Position> possibleMoves(Board board){
         List<Position> moves = new ArrayList<>();
-        // Make list of all possible moves
+        int row = getPosition().getRow();
+        int col = getPosition().getCol();
+
+        int[][] directions = {{2,1},{2,-1},{-2,1},{-2,-1},{1,2},{1,-2},{-1,2},{-1,-2}};
+
+        for (int[] d : directions) {
+            Position p = new Position(row + d[0], col + d[1]);
+            if (board.isInBounds(p)) {
+                Piece target = board.getPiece(p);
+                if (target == null || target.getColor() != getColor()) {
+                    moves.add(p);
+                }
+            }
+        }
         return moves;
     }
 

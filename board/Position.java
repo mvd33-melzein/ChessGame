@@ -21,8 +21,21 @@ public class Position{
         return row;
     }
 
-    public int getColumn(){
+    public int getCol(){
         return col;
+    }
+
+    public static boolean equals(Position a, Position b) {
+        if (a == null || b == null){
+            return false;
+        }
+        if(a.getRow() != b.getRow()){
+            return false;
+        }
+        else if(a.getCol() != b.getCol()){
+            return false;
+        }
+        return true;
     }
 
 

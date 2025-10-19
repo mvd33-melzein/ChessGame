@@ -4,10 +4,11 @@ import java.util.List;
 import board.*;
 
 public abstract class Piece{
-    private Color color;
-    private Position position;
+    protected Color color;
+    protected Position position;
+    protected boolean hasMoved = false;
 
-    public Piece(Color color, Position postition){
+    public Piece(Color color, Position position){
         this.color = color;
         this.position = position;
     }
@@ -20,9 +21,14 @@ public abstract class Piece{
         return position;
     }
 
-    public void move(Position newPosition){
-        position = newPosition;
+    public boolean hasMoved(){
+        return hasMoved;
     }
 
-    public abstract List<Position> possibleMoves();
+    public void move(Position newPosition){
+        position = newPosition;
+        hasMoved = true;
+    }
+
+    public abstract List<Position> possibleMoves(Board board);
 }

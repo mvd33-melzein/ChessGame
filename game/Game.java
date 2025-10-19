@@ -1,15 +1,23 @@
 package game;
 
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 import board.*;
 import pieces.*;
 
 public class Game{
     private Board board;
     private boolean isRunning;
+    private Player whitePlayer;
+    private Player blackPlayer;
+    private Player currentPlayer;
 
     public Game(){
         this.board = new Board();
+        whitePlayer = new Player(Color.WHITE);
+        blackPlayer = new Player(Color.BLACK);
+        currentPlayer = whitePlayer;
         isRunning = true;
     }
 
@@ -18,29 +26,69 @@ public class Game{
         board.initialize();
         while(isRunning){
             board.display();
+            System.out.println(currentPlayer.getColor() + "'s turn.");
             System.out.print("Enter a move(e2 e4) or 'quit': ");
             String input = scanner.nextLine().trim();
 
-            handleInput(input);
+            boolean moveWasSuccessful = handleInput(input);
+            if(moveWasSuccessful){
+                if(currentPlayer == whitePlayer){
+                    currentPlayer = blackPlayer;
+                }
+                else{
+                    currentPlayer = whitePlayer;
+                }
+            }
 
         }
 
         System.out.println("Game has ended");
     }
 
-    public void handleInput(String input){
+    public boolean handleInput(String input){
         if(input.equals("quit")){
             isRunning = false;
-            return;
+            return false;
         }
 
         if(isValidInput(input)){
-            System.out.println("Input is valid\n");
-            // Input is now in correct format
-            // check whether piece can actually move there
-            // check whether the piece is their color
+            String[] parts = input.toUpperCase().split(" ");
+
+            Position from = Position.fromNotation(parts[0]);
+            Position to = Position.fromNotation(parts[1]);
+
+            Piece piece = board.getPiece(from);
+
+            if (piece == null) {
+                System.out.println("No piece at " + parts[0] + "\n");
+                return false;
+            }
+            if (piece.getColor() != currentPlayer.getColor()) {
+                System.out.println("Wrong color piece");
+                return false;
+            }
+
+            List<Position> validMoves = piece.possibleMoves(board);
+            boolean isLegalMove = false;
+            for (Position move : validMoves) {
+                if (Position.equals(move, to)) {
+                    isLegalMove = true;
+                    break;
+                }
+            }
+
+            if (isLegalMove) {
+                board.movePiece(from, to);
+                System.out.println("Move executed");
+                return true;
+            } else {
+                System.out.println("Illegal move for that piece\n");
+                return false;
+            }
+            
         } else{
             System.out.println("Invalid input, try again\n");
+            return false;
         }
     }
 
