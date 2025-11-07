@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import board.*;
 import pieces.*;
+import gui.*;
 
 public class Game{
     private Board board;
@@ -19,6 +20,10 @@ public class Game{
         blackPlayer = new Player(Color.BLACK);
         currentPlayer = whitePlayer;
         isRunning = true;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 
     public void start(){
@@ -124,6 +129,8 @@ public class Game{
     public static void main(String[] args){
         Game game = new Game();
         game.start();
+
+        ChessGUI gui = new ChessGUI(game);
 
     }
 }
