@@ -4,16 +4,16 @@ import java.util.List;
 import board.*;
 
 public abstract class Piece{
-    protected Color color;
+    protected PlayerColor color;
     protected Position position;
     protected boolean hasMoved = false;
 
-    public Piece(Color color, Position position){
+    public Piece(PlayerColor color, Position position){
         this.color = color;
         this.position = position;
     }
 
-    public Color getColor(){
+    public PlayerColor getPlayerColor(){
         return color;
     }
 

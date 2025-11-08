@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Bishop extends Piece{
 
-    public Bishop(Color color, Position position){
+    public Bishop(PlayerColor color, Position position){
         super(color, position);
     }
 
@@ -27,7 +27,7 @@ public class Bishop extends Piece{
                 if (target == null) {
                     moves.add(new Position(r, c));
                 } else {
-                    if (target.getColor() != getColor()) {
+                    if (target.getPlayerColor() != getPlayerColor()) {
                         moves.add(new Position(r, c));
                     }
                     break;
@@ -41,7 +41,7 @@ public class Bishop extends Piece{
 
     @Override
     public String toString(){
-        if(getColor() == Color.WHITE){
+        if(getPlayerColor() == PlayerColor.WHITE){
             return "wB";
         }
         else{

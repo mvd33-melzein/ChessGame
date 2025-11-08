@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Knight extends Piece{
 
-    public Knight(Color color, Position position){
+    public Knight(PlayerColor color, Position position){
         super(color, position);
     }
 
@@ -22,7 +22,7 @@ public class Knight extends Piece{
             Position p = new Position(row + d[0], col + d[1]);
             if (board.isInBounds(p)) {
                 Piece target = board.getPiece(p);
-                if (target == null || target.getColor() != getColor()) {
+                if (target == null || target.getPlayerColor() != getPlayerColor()) {
                     moves.add(p);
                 }
             }
@@ -32,7 +32,7 @@ public class Knight extends Piece{
 
     @Override
     public String toString(){
-        if(getColor() == Color.WHITE){
+        if(getPlayerColor() == PlayerColor.WHITE){
             return "wN";
         }
         else{

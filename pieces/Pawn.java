@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Pawn extends Piece{
 
-    public Pawn(Color color, Position position){
+    public Pawn(PlayerColor color, Position position){
         super(color, position);
     }
 
@@ -23,7 +23,7 @@ public class Pawn extends Piece{
         int col = position.getCol();
         int direction = 0;
 
-        if(color == Color.WHITE){
+        if(color == PlayerColor.WHITE){
             direction = 1;
         }
         else{
@@ -46,7 +46,7 @@ public class Pawn extends Piece{
         Position captureLeft = new Position(row + direction, col - 1);
         if (board.isInBounds(captureLeft)) {
             Piece target = board.getPiece(captureLeft);
-            if (target != null && target.getColor() != this.color) {
+            if (target != null && target.getPlayerColor() != this.color) {
                 moves.add(captureLeft);
             }
         }
@@ -54,7 +54,7 @@ public class Pawn extends Piece{
         Position captureRight = new Position(row + direction, col + 1);
         if (board.isInBounds(captureRight)) {
             Piece target = board.getPiece(captureRight);
-            if (target != null && target.getColor() != this.color) {
+            if (target != null && target.getPlayerColor() != this.color) {
                 moves.add(captureRight);
             }
         }
@@ -64,7 +64,7 @@ public class Pawn extends Piece{
 
     @Override
     public String toString(){
-        if(getColor() == Color.WHITE){
+        if(getPlayerColor() == PlayerColor.WHITE){
             return "wp";
         }
         else{

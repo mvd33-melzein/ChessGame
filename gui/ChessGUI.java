@@ -9,8 +9,14 @@ import game.*;
 import pieces.*;
 
 public class ChessGUI extends JFrame{
+
+    private static final Color LIGHT_SQUARE = new Color(240, 217, 181);
+    private static final Color DARK_SQUARE = new Color(181, 136, 99);
+    private static final Color HIGHLIGHT = new Color(186, 202, 68);
+
     private Game game;
     private JButton[][] buttons;
+    private Position selectedSquare = null;
 
     public ChessGUI(Game game){
         this.game = game;
@@ -21,12 +27,27 @@ public class ChessGUI extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(8, 8));
+        panel.setLayout(new java.awt.GridLayout(8, 8));
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 JButton btn = new JButton();
                 buttons[i][j] = btn;
+
+                btn.setOpaque(true);
+                btn.setBorderPainted(false);
+                btn.setContentAreaFilled(true);
+
+                if ((i + j) % 2 == 0) {
+                    btn.setBackground(LIGHT_SQUARE);
+                } else {
+                    btn.setBackground(DARK_SQUARE);
+                }
+
+                final int row = i;
+                final int col = j;
+
+                btn.addActionListener(e -> handleClick(row, col));
 
                 panel.add(btn);
             }
@@ -38,11 +59,50 @@ public class ChessGUI extends JFrame{
         refreshBoard();
     }
 
+    private void handleClick(int row, int col){
+        Board board = game.getBoard();
+        Position clicked = new Position(row, col);
+
+        // first click
+        if(selectedSquare == null){
+            Piece piece = board.getPiece(clicked);
+            if(piece == null){
+                return;
+            }
+            if(piece.getPlayerColor() != game.getCurrentPlayerColor()){
+                return;
+            }
+            selectedSquare = clicked;
+            refreshBoard();
+            highlightSquare(row, col);
+            return;
+        }
+
+        // second click
+        boolean moved = game.handleMove(selectedSquare, clicked);
+        if (moved) {
+            game.switchPlayer();
+        }
+
+        selectedSquare = null;
+        refreshBoard();
+    }
+
+    private void highlightSquare(int row, int col) {
+        buttons[row][col].setBackground(HIGHLIGHT);
+    }
+
     public void refreshBoard(){
         Board board = game.getBoard();
 
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
+                if ((i + j) % 2 == 0) {
+                    buttons[i][j].setBackground(LIGHT_SQUARE);
+                } else {
+                    buttons[i][j].setBackground(DARK_SQUARE);
+                }
+
                 Position pos = new Position(i, j);
                 Piece piece = board.getPiece(pos);
                 if (piece != null) {

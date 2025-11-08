@@ -1,15 +1,15 @@
 package game;
 
-import pieces.Color;
+import pieces.PlayerColor;
 
 public class Player {
-    private Color color;
+    private PlayerColor color;
 
-    public Player(Color color) {
+    public Player(PlayerColor color) {
         this.color = color;
     }
 
-    public Color getColor() {
+    public PlayerColor getPlayerColor() {
         return color;
     }
 }

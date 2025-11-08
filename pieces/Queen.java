@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Queen extends Piece{
 
-public Queen(Color color, Position position){
+public Queen(PlayerColor color, Position position){
         super(color, position);
     }
 
@@ -27,7 +27,7 @@ public Queen(Color color, Position position){
                 if (target == null) {
                     moves.add(new Position(r, c));
                 } else {
-                    if (target.getColor() != getColor()) {
+                    if (target.getPlayerColor() != getPlayerColor()) {
                         moves.add(new Position(r, c)); 
                     }
                     break;
@@ -41,7 +41,7 @@ public Queen(Color color, Position position){
 
     @Override
     public String toString(){
-        if(getColor() == Color.WHITE){
+        if(getPlayerColor() == PlayerColor.WHITE){
             return "wQ";
         }
         else{
