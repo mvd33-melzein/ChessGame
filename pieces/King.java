@@ -23,7 +23,9 @@ public class King extends Piece{
             if (board.isInBounds(p)) {
                 Piece target = board.getPiece(p);
                 if (target == null || target.getPlayerColor() != getPlayerColor()) {
-                    moves.add(p);
+                    if (board.simulateMove(getPosition(), p, getPlayerColor())) {
+                        moves.add(p);
+                    }
                 }
             }
         }

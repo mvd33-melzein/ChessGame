@@ -10,9 +10,9 @@ import pieces.*;
 
 public class ChessGUI extends JFrame{
 
-    private static final Color LIGHT_SQUARE = new Color(240, 217, 181);
-    private static final Color DARK_SQUARE = new Color(181, 136, 99);
-    private static final Color HIGHLIGHT = new Color(186, 202, 68);
+    private static final Color LIGHT_SQUARE = new Color(0xEE, 0xEE, 0xD2);
+    private static final Color DARK_SQUARE = new Color(0x76, 0x96, 0x56);
+    private static final Color HIGHLIGHT = new Color(0xBA, 0xCA, 0x2B);
 
     private Game game;
     private JButton[][] buttons;
@@ -60,6 +60,9 @@ public class ChessGUI extends JFrame{
     }
 
     private void handleClick(int row, int col){
+        if(!game.isGameRunning()){
+            return;
+        }
         Board board = game.getBoard();
         Position clicked = new Position(row, col);
 
@@ -90,6 +93,21 @@ public class ChessGUI extends JFrame{
 
     private void highlightSquare(int row, int col) {
         buttons[row][col].setBackground(HIGHLIGHT);
+    }
+
+    public void showGameOverWindow(String winner) {
+        JFrame endFrame = new JFrame("Game Over");
+
+        endFrame.setSize(300, 150);
+        endFrame.setLocationRelativeTo(null);
+        endFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JLabel label = new JLabel(winner + " wins by checkmate!", SwingConstants.CENTER);
+        label.setFont(new Font("Arial", Font.BOLD, 16));
+
+        endFrame.add(label);
+
+        endFrame.setVisible(true);
     }
 
     public void refreshBoard(){

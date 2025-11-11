@@ -1,9 +1,11 @@
 package board;
 
+import java.util.*;
 import pieces.*;
 
 public class Board{
     private Piece[][] board;
+    private boolean checkingMode = false;
 
     public Board(){
         board = new Piece[8][8];
@@ -39,6 +41,14 @@ public class Board{
             board[1][i] = new Pawn(PlayerColor.WHITE, new Position(1, i));
         }
 
+    }
+
+    public boolean isCheckingMode() {
+        return checkingMode;
+    }
+
+    public void setCheckingMode(boolean checkingMode) {
+        this.checkingMode = checkingMode;
     }
 
     public Piece getPiece(Position pos){
@@ -94,4 +104,87 @@ public class Board{
         int c = pos.getCol();
         return r >= 0 && r < 8 && c >= 0 && c < 8;
     }
+
+    public boolean isKingInCheck(PlayerColor color){
+
+        if (checkingMode) {
+            return false;
+        }
+        checkingMode = true;
+
+        Position kingPos = findKing(color);
+        for (Piece[] row :board) {
+            for (Piece p : row) {
+                if (p != null && p.getPlayerColor() != color) {
+                    List<Position> moves = p.possibleMoves(this);
+                    for (Position move : moves) {
+                        if (Position.equals(move, kingPos)) {
+                            checkingMode = false;
+                            return true; // king is under attack
+                        }
+                    }
+                }
+            }
+        }
+        checkingMode = false;
+        return false;
+    }
+
+    public Position findKing(PlayerColor color){
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Piece p = board[i][j];
+                if (p != null && p.getPlayerColor() == color && p instanceof King) {
+                    return new Position(i, j);
+                }
+            }
+        }
+        return null;
+    }
+
+    // maybe remove
+    public void forceMove(Position from, Position to) {
+        Piece p = getPiece(from);
+        setPiece(to, p);
+        setPiece(from, null);
+        if (p != null){
+            p.setPosition(to);
+        }
+    }
+
+    public boolean simulateMove(Position from, Position to, PlayerColor color) {
+        Piece piece = getPiece(from);
+        Piece captured = getPiece(to);
+
+        // apply simulated move
+        forceMove(from, to);
+
+        boolean kingSafe = !isKingInCheck(color);
+
+        // undo
+        forceMove(to, from);
+        if (captured != null){
+            setPiece(to, captured);
+        }
+        return kingSafe;
+    }
+
+    public void setPiece(Position pos, Piece piece) {
+        board[pos.getRow()][pos.getCol()] = piece;
+    }
+
+    public List<Piece> getPiecesForColor(PlayerColor color) {
+    List<Piece> pieces = new ArrayList<>();
+
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            Piece p = board[i][j];
+            if (p != null && p.getPlayerColor() == color) {
+                pieces.add(p);
+            }
+        }
+    }
+
+    return pieces;
+}
 }

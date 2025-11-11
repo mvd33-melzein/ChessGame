@@ -61,7 +61,7 @@ public class Pawn extends Piece{
 
         return moves;
     }
-
+    
     @Override
     public String toString(){
         if(getPlayerColor() == PlayerColor.WHITE){
@@ -71,4 +71,5 @@ public class Pawn extends Piece{
             return "bp";
         }
     }
+    */
 }

@@ -3,6 +3,8 @@ package game;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.*;
+import javax.swing.*;
 import board.*;
 import pieces.*;
 import gui.*;
@@ -24,6 +26,10 @@ public class Game{
 
     public Board getBoard() {
         return board;
+    }
+
+    public boolean isGameRunning(){
+        return isRunning;
     }
 
     public void switchPlayer() {
@@ -135,14 +141,46 @@ public class Game{
             }
         }
 
-        if (isLegalMove) {
-            board.movePiece(from, to);
-            System.out.println("Move executed");
-            return true;
-        } else {
+        if (!isLegalMove) {
             System.out.println("Illegal move for that piece");
             return false;
         }
+
+        // check if king is in check
+
+        if (!board.simulateMove(from, to, currentPlayer.getPlayerColor())) {
+            System.out.println("Illegal: King would be in check");
+            return false;
+        }
+
+        board.movePiece(from, to);
+        System.out.println("Move executed");
+
+        // check for checkmate
+        
+        PlayerColor opponentColor = (currentPlayer == whitePlayer) ? PlayerColor.BLACK : PlayerColor.WHITE;
+
+        if (board.isKingInCheck(opponentColor)) {
+
+            if (isCheckmate(opponentColor)) {
+                System.out.println(opponentColor + " is in checkmate! Game over.");
+                isRunning = false;
+                JFrame endFrame = new JFrame("Game Over");
+                endFrame.setSize(300, 150);
+                endFrame.setLocationRelativeTo(null);
+                endFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+                JLabel label = new JLabel(opponentColor + " is in checkmate! " + currentPlayer.getPlayerColor() + " wins!");
+                label.setFont(new Font("Arial", Font.BOLD, 16));
+                endFrame.add(label);
+
+                endFrame.setVisible(true);
+            } else {
+                System.out.println(opponentColor + " is in check.");
+            }
+        }
+        
+        return true;
     }
 
     public boolean isValidInput(String input){
@@ -173,6 +211,37 @@ public class Game{
 
         return true;
     }
+    
+    public boolean isCheckmate(PlayerColor color) {
+    if (!board.isKingInCheck(color)) {
+        return false;
+    }
+
+    List<Piece> pieces = board.getPiecesForColor(color);
+
+    for (Piece piece : pieces) {
+        List<Position> moves = piece.possibleMoves(board);
+
+        for (Position to : moves) {
+            Position from = piece.getPosition();
+
+            Piece captured = board.getPiece(to);
+            board.forceMove(from, to);
+
+            boolean stillInCheck = board.isKingInCheck(color);
+
+            board.forceMove(to, from);
+            if (captured != null) board.setPiece(to, captured);
+
+            if (!stillInCheck) {
+                return false;
+            }
+        }
+    }
+
+        return true;
+    }
+    
 
     public static void main(String[] args){
         Game game = new Game();

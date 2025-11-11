@@ -21,6 +21,10 @@ public abstract class Piece{
         return position;
     }
 
+    public void setPosition(Position newPos) {
+        position = newPos;
+    }
+
     public boolean hasMoved(){
         return hasMoved;
     }
