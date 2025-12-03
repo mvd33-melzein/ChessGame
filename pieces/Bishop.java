@@ -48,4 +48,14 @@ public class Bishop extends Piece{
             return "bB";
         }
     }
+    
+    @Override
+    public String getImagePath(){
+        if(getPlayerColor() == PlayerColor.WHITE){
+            return "images/WhiteBishop.png";
+        }
+        else{
+            return "images/BlackBishop.png";
+        }
+    }
 }

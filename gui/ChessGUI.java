@@ -112,6 +112,8 @@ public class ChessGUI extends JFrame{
 
     public void refreshBoard(){
         Board board = game.getBoard();
+        
+        int imageSize = 60;
 
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
@@ -124,8 +126,15 @@ public class ChessGUI extends JFrame{
                 Position pos = new Position(i, j);
                 Piece piece = board.getPiece(pos);
                 if (piece != null) {
-                    buttons[i][j].setText(piece.toString());
+                    String imagePath = piece.getImagePath();
+                    ImageIcon icon = new ImageIcon(imagePath);
+                    // Scale the image to fit the button nicely
+                    Image img = icon.getImage();
+                    Image scaledImg = img.getScaledInstance(imageSize, imageSize, Image.SCALE_SMOOTH);
+                    buttons[i][j].setIcon(new ImageIcon(scaledImg));
+                    buttons[i][j].setText("");
                 } else {
+                    buttons[i][j].setIcon(null);
                     buttons[i][j].setText("");
                 }
             }

@@ -72,4 +72,14 @@ public class Pawn extends Piece{
         }
     }
     
+    @Override
+    public String getImagePath(){
+        if(getPlayerColor() == PlayerColor.WHITE){
+            return "images/WhitePawn.png";
+        }
+        else{
+            return "images/BlackPawn.png";
+        }
+    }
+    
 }

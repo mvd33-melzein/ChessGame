@@ -48,4 +48,14 @@ public Queen(PlayerColor color, Position position){
             return "bQ";
         }
     }
+    
+    @Override
+    public String getImagePath(){
+        if(getPlayerColor() == PlayerColor.WHITE){
+            return "images/WhiteQueen.png";
+        }
+        else{
+            return "images/BlackQueen.png";
+        }
+    }
 }

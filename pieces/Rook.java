@@ -51,4 +51,14 @@ public class Rook extends Piece{
             return "bR";
         }
     }
+    
+    @Override
+    public String getImagePath(){
+        if(getPlayerColor() == PlayerColor.WHITE){
+            return "images/WhiteRook.png";
+        }
+        else{
+            return "images/BlackRook.png";
+        }
+    }
 }

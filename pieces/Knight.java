@@ -39,4 +39,14 @@ public class Knight extends Piece{
             return "bN";
         }
     }
+    
+    @Override
+    public String getImagePath(){
+        if(getPlayerColor() == PlayerColor.WHITE){
+            return "images/WhiteKnight.png";
+        }
+        else{
+            return "images/BlackKnight.png";
+        }
+    }
 }

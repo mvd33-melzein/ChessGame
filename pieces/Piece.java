@@ -35,4 +35,6 @@ public abstract class Piece{
     }
 
     public abstract List<Position> possibleMoves(Board board);
+    
+    public abstract String getImagePath();
 }

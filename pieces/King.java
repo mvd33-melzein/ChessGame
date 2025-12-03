@@ -41,4 +41,14 @@ public class King extends Piece{
             return "bK";
         }
     }
+    
+    @Override
+    public String getImagePath(){
+        if(getPlayerColor() == PlayerColor.WHITE){
+            return "images/WhiteKing.png";
+        }
+        else{
+            return "images/BlackKing.png";
+        }
+    }
 }
