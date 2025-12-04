@@ -3,15 +3,17 @@ package board;
 import java.util.*;
 import pieces.*;
 
+// Represents the chess board and manages piece positions
 public class Board{
     private Piece[][] board;
+    // Prevents infinite recursion when checking for check
     private boolean checkingMode = false;
 
     public Board(){
         board = new Piece[8][8];
     }
     
-    
+    // Sets up the initial chess position with all pieces
     public void initialize(){
         // Black Pieces
         board[7][0] = new Rook(PlayerColor.BLACK, new Position(7,0));
@@ -55,6 +57,7 @@ public class Board{
         return board[pos.getRow()][pos.getCol()];
     }
 
+    // Moves a piece from one position to another, handling captures
     public void movePiece(Position from, Position to){
         Piece piece = getPiece(from);
 
@@ -105,6 +108,9 @@ public class Board{
         return r >= 0 && r < 8 && c >= 0 && c < 8;
     }
 
+    // Locates the king of the specified color on the board
+
+    // Checks if the king of the given color is under attack
     public boolean isKingInCheck(PlayerColor color){
 
         if (checkingMode) {
@@ -130,6 +136,7 @@ public class Board{
         return false;
     }
 
+    // Locates the king of the specified color on the board
     public Position findKing(PlayerColor color){
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -142,7 +149,7 @@ public class Board{
         return null;
     }
 
-    // maybe remove
+    // Moves a piece without validation (used for simulation)
     public void forceMove(Position from, Position to) {
         Piece p = getPiece(from);
         setPiece(to, p);
@@ -152,6 +159,7 @@ public class Board{
         }
     }
 
+    // Temporarily moves a piece to check if the move would leave the king in check
     public boolean simulateMove(Position from, Position to, PlayerColor color) {
         Piece piece = getPiece(from);
         Piece captured = getPiece(to);
@@ -161,7 +169,7 @@ public class Board{
 
         boolean kingSafe = !isKingInCheck(color);
 
-        // undo
+        // undo the move
         forceMove(to, from);
         if (captured != null){
             setPiece(to, captured);
@@ -173,6 +181,7 @@ public class Board{
         board[pos.getRow()][pos.getCol()] = piece;
     }
 
+    // Returns all pieces on the board for a given color
     public List<Piece> getPiecesForColor(PlayerColor color) {
     List<Piece> pieces = new ArrayList<>();
 

@@ -8,8 +8,9 @@ import board.*;
 import game.*;
 import pieces.*;
 
+// Main GUI window for the chess game
 public class ChessGUI extends JFrame{
-
+    // Chess board color scheme
     private static final Color LIGHT_SQUARE = new Color(0xEE, 0xEE, 0xD2);
     private static final Color DARK_SQUARE = new Color(0x76, 0x96, 0x56);
     private static final Color HIGHLIGHT = new Color(0xBA, 0xCA, 0x2B);
@@ -18,6 +19,7 @@ public class ChessGUI extends JFrame{
     private JButton[][] buttons;
     private Position selectedSquare = null;
 
+    // Sets up the chess board GUI with 8x8 grid of buttons
     public ChessGUI(Game game){
         this.game = game;
         this.buttons = new JButton[8][8];
@@ -38,6 +40,7 @@ public class ChessGUI extends JFrame{
                 btn.setBorderPainted(false);
                 btn.setContentAreaFilled(true);
 
+                // Alternate square colors to create checkerboard pattern
                 if ((i + j) % 2 == 0) {
                     btn.setBackground(LIGHT_SQUARE);
                 } else {
@@ -59,6 +62,7 @@ public class ChessGUI extends JFrame{
         refreshBoard();
     }
 
+    // Handles square clicks: first click selects piece, second click moves it
     private void handleClick(int row, int col){
         if(!game.isGameRunning()){
             return;
@@ -66,7 +70,7 @@ public class ChessGUI extends JFrame{
         Board board = game.getBoard();
         Position clicked = new Position(row, col);
 
-        // first click
+        // First click: select a piece
         if(selectedSquare == null){
             Piece piece = board.getPiece(clicked);
             if(piece == null){
@@ -91,6 +95,7 @@ public class ChessGUI extends JFrame{
         refreshBoard();
     }
 
+    // Highlights a square to show the selected piece
     private void highlightSquare(int row, int col) {
         buttons[row][col].setBackground(HIGHLIGHT);
     }
@@ -110,6 +115,7 @@ public class ChessGUI extends JFrame{
         endFrame.setVisible(true);
     }
 
+    // Updates the visual representation of the board with current piece positions
     public void refreshBoard(){
         Board board = game.getBoard();
         

@@ -16,9 +16,10 @@ public Queen(PlayerColor color, Position position){
         int row = getPosition().getRow();
         int col = getPosition().getCol();
 
+        // Queen combines rook and bishop moves (all 8 directions)
         int[][] directions = {{1,0}, {-1,0}, {0,1}, {0,-1}, {1,1}, {1,-1}, {-1,1}, {-1,-1}};
 
-        
+        // Slide in each direction until blocked by a piece or board edge
         for (int[] d : directions) {
             int r = row + d[0];
             int c = col + d[1];
@@ -27,6 +28,7 @@ public Queen(PlayerColor color, Position position){
                 if (target == null) {
                     moves.add(new Position(r, c));
                 } else {
+                    // Can capture enemy piece, but stops here
                     if (target.getPlayerColor() != getPlayerColor()) {
                         moves.add(new Position(r, c)); 
                     }

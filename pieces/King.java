@@ -18,6 +18,7 @@ public class King extends Piece{
 
         int[][] directions = {{1,0}, {-1,0}, {0,1}, {0,-1}, {1,1}, {1,-1}, {-1,1}, {-1,-1}};
 
+        // King moves one square in any direction, but must not move into check
         for (int[] d : directions) {
             Position p = new Position(row + d[0], col + d[1]);
             if (board.isInBounds(p)) {

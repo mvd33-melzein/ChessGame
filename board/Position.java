@@ -1,5 +1,6 @@
 package board;
 
+// Represents a position on the chess board (row, col)
 public class Position{
     private int row;
     private int col;
@@ -9,6 +10,7 @@ public class Position{
         this.col = col;
     }
 
+    // Converts chess notation (e.g., "e4") to a Position object
     public static Position fromNotation(String str){
         char file = Character.toUpperCase(str.charAt(0));
         int col = file - 'A';

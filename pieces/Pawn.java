@@ -21,6 +21,7 @@ public class Pawn extends Piece{
 
         int row = position.getRow();
         int col = position.getCol();
+        // Pawns move forward (up for white, down for black)
         int direction = 0;
 
         if(color == PlayerColor.WHITE){

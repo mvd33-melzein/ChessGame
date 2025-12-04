@@ -16,6 +16,7 @@ public class Knight extends Piece{
         int row = getPosition().getRow();
         int col = getPosition().getCol();
 
+        // Knight moves in L-shape 
         int[][] directions = {{2,1},{2,-1},{-2,1},{-2,-1},{1,2},{1,-2},{-1,2},{-1,-2}};
 
         for (int[] d : directions) {

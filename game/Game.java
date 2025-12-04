@@ -9,6 +9,7 @@ import board.*;
 import pieces.*;
 import gui.*;
 
+// Manages game state and move validation
 public class Game{
     private Board board;
     private boolean isRunning;
@@ -16,6 +17,7 @@ public class Game{
     private Player blackPlayer;
     private Player currentPlayer;
 
+    // Initializes a new game with players and board
     public Game(){
         this.board = new Board();
         whitePlayer = new Player(PlayerColor.WHITE);
@@ -32,6 +34,7 @@ public class Game{
         return isRunning;
     }
 
+    // Alternates between white and black players
     public void switchPlayer() {
         if (currentPlayer == whitePlayer) {
             currentPlayer = blackPlayer;
@@ -119,7 +122,7 @@ public class Game{
         }
     }
 
-    // this is for GUI
+    // Validates and executes a move from the GUI
     public boolean handleMove(Position from, Position to){
         Piece piece = board.getPiece(from);
 
@@ -146,8 +149,7 @@ public class Game{
             return false;
         }
 
-        // check if king is in check
-
+        // Verify the move doesn't leave the king in check
         if (!board.simulateMove(from, to, currentPlayer.getPlayerColor())) {
             System.out.println("Illegal: King would be in check");
             return false;
@@ -156,7 +158,7 @@ public class Game{
         board.movePiece(from, to);
         System.out.println("Move executed");
 
-        // check for checkmate
+        // Check if the move results in checkmate
         
         PlayerColor opponentColor = (currentPlayer == whitePlayer) ? PlayerColor.BLACK : PlayerColor.WHITE;
 
@@ -183,6 +185,7 @@ public class Game{
         return true;
     }
 
+    // Validates that input matches chess notation format (e.g., "e2 e4")
     public boolean isValidInput(String input){
         if(input.length() != 5){
             return false;
@@ -212,6 +215,7 @@ public class Game{
         return true;
     }
     
+    // Determines if the given color is in checkmate (in check with no legal moves)
     public boolean isCheckmate(PlayerColor color) {
     if (!board.isKingInCheck(color)) {
         return false;
@@ -219,6 +223,7 @@ public class Game{
 
     List<Piece> pieces = board.getPiecesForColor(color);
 
+    // Try all possible moves to see if any can escape check
     for (Piece piece : pieces) {
         List<Position> moves = piece.possibleMoves(board);
 
@@ -242,7 +247,7 @@ public class Game{
         return true;
     }
     
-
+    // Entry point: creates game and GUI
     public static void main(String[] args){
         Game game = new Game();
         game.start();

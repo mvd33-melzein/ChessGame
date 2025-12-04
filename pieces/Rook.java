@@ -18,9 +18,10 @@ public class Rook extends Piece{
         int row = getPosition().getRow();
         int col = getPosition().getCol();
 
+        // Rook moves horizontally and vertically
         int[][] directions = {{1,0}, {-1,0}, {0,1}, {0,-1}};
 
-        
+        // Slide in each direction until blocked by a piece or board edge
         for (int[] d : directions) {
             int r = row + d[0];
             int c = col + d[1];
@@ -29,6 +30,7 @@ public class Rook extends Piece{
                 if (target == null) {
                     moves.add(new Position(r, c));
                 } else {
+                    // Can capture enemy piece, but stops here
                     if (target.getPlayerColor() != getPlayerColor()) {
                         moves.add(new Position(r, c)); 
                     }
