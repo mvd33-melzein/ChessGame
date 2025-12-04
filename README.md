@@ -5,7 +5,7 @@ Course Number: 3354
 Section Number: 001
 
 GUI:
-(images/GUI.png)
+![GUI](images/GUI.png)
 
 Class Diagram:
 
